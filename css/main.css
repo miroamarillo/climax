@@ -26,3 +26,10 @@
   font-size: 2.2rem;
   color: #000;
 }
+#city {
+  text-align: center;
+  padding-top: 3em;
+}
+#city h2 {
+  font-size: 4.2em;
+}
