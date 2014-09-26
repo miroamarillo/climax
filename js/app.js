@@ -17,3 +17,16 @@ angular.module('myApp', [])
 		//Kick off the update function
 		updateTime();
 	})
+	.provider('Weather', function(){
+		var apiKey = "edce8d7f316b6fe4";
+
+		this.setApiKey = function(key){
+			if(key) this.apiKey = key;
+		};
+
+		this.$get = function($http){
+			return{
+				// Service object
+			}
+		}
+	})
