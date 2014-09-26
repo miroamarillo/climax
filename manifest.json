@@ -1,0 +1,17 @@
+{
+  "manifest_version": 1,
+  "name": "Climax",
+  "description": "Weather New Tab App",
+  "version": "0.1",
+  "permissions": [
+    "http://api.wunderground.com/api/",
+    "http://autocomplete.wunderground.com/api"
+  ],
+  "background": {
+    "scripts": ["js/vendor/angular.min.js"]
+  },
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "chrome_url_overrides" : {
+    "newtab": "tab.html"
+  }
+}
