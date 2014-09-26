@@ -77,3 +77,13 @@ angular.module('myApp', ['ngRoute'])
 			})
 			.otherwise({redirectTo: '/'});
 	})
+	.factory('UserService', function(){
+		var defaults = {
+			location: 'autoip'
+		};
+		var service = {
+			user: defaults
+		};
+
+		return service;
+	})
