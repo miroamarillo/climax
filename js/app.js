@@ -30,7 +30,22 @@ angular.module('myApp', ['ngRoute'])
 			        // The wunderground API returns the
 			        // object that nests the forecasts inside
 			        // the forecast.simpleforecast key
+			        console.log(data);
 			        d.resolve(data.forecast.simpleforecast);
+			      }).error(function(err) {
+			        d.reject(err);
+			      });
+			      return d.promise;
+			    },
+			    getCityDetails: function(query) {
+			      var d = $q.defer();
+			      $http({
+			        method: 'GET',
+			        url: "http://autocomplete.wunderground.com/aq?query=" +
+			              query
+			      }).success(function(data) {
+			        d.resolve(data.RESULTS);
+			        console.log(data);
 			      }).error(function(err) {
 			        d.reject(err);
 			      });
@@ -39,32 +54,30 @@ angular.module('myApp', ['ngRoute'])
 			}
 		}
 	})
+	.factory('UserService', function(){
+		var defaults = {
+			location: 'Location'
+		};
+		var service = {
+			user: {},
+			save: function(){
+				localStorage.climax = angular.toJson(service.user);
+			},
+			restore: function(){
+				//Pull from sessionStorage
+				service.user = angular.fromJson(localStorage.climax) || defaults;
+
+				return service.user;
+			}
+		};
+		// Immediately call restore from the session storage
+		// so we have our user data available immediately
+		service.restore();
+		return service;
+	})
 	.config(function(WeatherProvider) {
 		WeatherProvider.setApiKey('edce8d7f316b6fe4');
 	})
-	.controller('MainController', function($scope, $timeout, Weather){
-		//Build the date object
-		$scope.date = {};
-
-	    $scope.weather = {}
-	    // Hardcode San_Francisco for now
-	    Weather.getWeatherForecast("CA/San_Francisco")
-	    .then(function(data) {
-	      $scope.weather.forecast = data;
-	    });
-
-		//Update function
-		var updateTime = function(){
-			$scope.date.raw = new Date();
-			$timeout(updateTime, 1000);
-		}
-
-		//Kick off the update function
-		updateTime();
-	})
-	.controller('SettingsController', ['$scope', function($scope){
-
-	}])
 	.config(function($routeProvider){
 		$routeProvider
 			.when('/', {
@@ -77,13 +90,90 @@ angular.module('myApp', ['ngRoute'])
 			})
 			.otherwise({redirectTo: '/'});
 	})
-	.factory('UserService', function(){
-		var defaults = {
-			location: 'autoip'
-		};
-		var service = {
-			user: defaults
-		};
+	.directive('autoFill', function($timeout) {
+	  return {
+	    restrict: 'EA',
+	    scope: {
+	      autoFill: '&',
+	      ngModel: '='
+	    },
+	    compile: function(tEle, tAttrs) {
+	      var tplEl = angular.element('<div class="typeahead">' +
+	      '<input type="text" autocomplete="off" />' +
+	      '<ul id="autolist" ng-show="reslist">' +
+	        '<li ng-repeat="res in reslist" ' +
+	          '>{{res.name}}</li>' +
+	      '</ul>' +
+	      '</div>');
+	      var input = tplEl.find('input');
+	      input.attr('type', tAttrs.type);
+	      input.attr('ng-model', tAttrs.ngModel);
+	      input.attr('timezone', tAttrs.timezone);
+	      tEle.replaceWith(tplEl);
 
-		return service;
+
+	      return function(scope, ele, attrs, ctrl) {
+	        var minKeyCount = attrs.minKeyCount || 3,
+	            timer,
+	            input = ele.find('input');
+
+	        input.bind('keyup', function(e) {
+	          val = ele.val();
+	          if (val.length < minKeyCount) {
+	            if (timer) $timeout.cancel(timer);
+	            scope.reslist = null;
+	            return;
+	          } else {
+	            if (timer) $timeout.cancel(timer);
+	            timer = $timeout(function() {
+	              scope.autoFill()(val)
+	              .then(function(data) {
+	                if (data && data.length > 0) {
+	                  scope.reslist = data;
+	                  scope.ngModel = data[0].name;
+	                  scope.timezone = data[0].tz;
+	                  // scope.ngModel = "zmw:" + data[0].zmw;
+	                }
+	              });
+	            }, 3000);
+	          }
+	        });
+	        // Hide the reslist on blur
+	        input.bind('blur', function(e) {
+	          scope.reslist = null;
+	          scope.$digest();
+	        });
+	      }
+	    }
+	  }
 	})
+	.controller('MainController', function($scope, $timeout, Weather, UserService){
+		//Build the date object
+		$scope.date = {};
+
+	    $scope.weather = {}
+	    // Hardcode San_Francisco for now
+	    $scope.user = UserService.user;
+	    Weather.getWeatherForecast($scope.user.location)
+	    .then(function(data) {
+	      $scope.weather.forecast = data;
+	    });
+
+		//Update function
+		var updateTime = function(){
+			$scope.date.tz = new Date(new Date().toLocaleString(
+	          "en-US", {timeZone: $scope.user.timezone}
+	        ));
+	      	$timeout(updateTime, 1000);
+		}
+
+		//Kick off the update function
+		updateTime();
+	})
+	.controller('SettingsController', function($scope, UserService, Weather){
+		$scope.user = UserService.user;
+		$scope.fetchCities = Weather.getCityDetails;
+		$scope.save = function(){
+			UserService.save();
+		}
+	});
