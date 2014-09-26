@@ -1,7 +1,7 @@
       <div ng-controller="MainController">
         <div id="datetime">
-          <h1>{{date.raw | date:'hh mm ss'}}</h1>
-          <h2>{{date.raw | date:'EEEE, MMMM dd, yyyy'}}</h2>
+          <h1>{{date.tz | date:'hh mm ss'}}</h1>
+          <h2>{{date.tz | date:'EEEE, MMMM dd, yyyy'}}</h2>
         </div>
 <!--         <div id="forecast">
           <pre>{{ weather.forecast | json }}</pre>
@@ -17,5 +17,8 @@
               </div>
             </li>
           </ul>
+        </div>
+        <div id="city">
+          <h1>{{user.location}}</h1>
         </div>
       </div>
