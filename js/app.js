@@ -3,7 +3,7 @@
 *
 * Simple Chrome Weather App
 */
-angular.module('myApp', [])
+angular.module('myApp', ['ng-route'])
 	.provider('Weather', function(){
 		var apiKey = "";
 
@@ -61,4 +61,16 @@ angular.module('myApp', [])
 
 		//Kick off the update function
 		updateTime();
+	})
+	.config(function($routeProvider){
+		$routeProvider
+			.when('/', {
+				templateUrl: 'templates/home.html',
+				controller: 'MainController'
+			})
+			.when('/settings', {
+				templateUrl: 'templates/settings.html',
+				controller: 'SettingsController'
+			})
+			.otherwise({redirectTo: '/'});
 	})
