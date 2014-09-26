@@ -3,7 +3,10 @@
 	<form ng-submit="save()">
 	  <input type="text"
 	          ng-model="user.location"
-	          placeholder="Enter a location" />
+	          timezone="user.timezone"
+	          auto-fill="fetchCities"
+	          autocomplete="off"
+	          placeholder="Location" />
 	  <input class="btn btn-primary"
 	        type="submit" value="Save" />
 	</form>
