@@ -12,10 +12,10 @@
   text-align: center;
 }
 #forecast ul li h3 {
-  font-size: 1.4em;
+  font-size: 1em;
 }
 #forecast ul li .today h3 {
-  font-size: 1.8em;
+  font-size: 1.2em;
 }
 #actionbar {
   position: absolute;
