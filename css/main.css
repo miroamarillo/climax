@@ -33,3 +33,8 @@
 #city h2 {
   font-size: 4.2em;
 }
+#today {
+  font-size: 0.4em;
+  font-style: italic;
+  color: #1C84FC;
+}
