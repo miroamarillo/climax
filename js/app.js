@@ -56,7 +56,7 @@ angular.module('myApp', ['ngRoute'])
 	})
 	.factory('UserService', function(){
 		var defaults = {
-			location: 'Location'
+			location: 'Toronto, Canada'
 		};
 		var service = {
 			user: {},
