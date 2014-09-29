@@ -11,7 +11,7 @@
             <li ng-repeat="day in weather.forecast.forecastday" class="col-md-3">
               <div ng-class="{today: $index == 0}">
                 <img class="{{ day.icon }}" ng-src="{{ day.icon_url }}" />
-                <h3>{{ day.high.celsius }} / {{ day.low.celsius }}</h3>
+                <h3><span class="highTemp">{{ day.high.celsius }}</span> <span class="lowTemp">{{ day.low.celsius }}</span></h3>
                 <h4 ng-if="$index == 0" id="today">Today<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
                 <h4 ng-if="$index != 0">{{ day.date.weekday }}<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
               </div>
