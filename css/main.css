@@ -1,3 +1,8 @@
+body {
+  font-family: 'HelveticaNeue-UltraLight','Helvetica Neue UltraLight','Helvetica Neue','Open-Light',sans-serif;
+  color: #D2D2D2;
+  background-color: #222426;
+}
 #datetime {
 	text-align: center;
 }
@@ -5,7 +10,7 @@
 	font-size: 8.1em;
 }
 #datetime h2 {
-	font-size: 1em;
+	font-size: 1.2em;
 }
 #forecast ul li {
   font-size: 4.5em;
@@ -13,6 +18,13 @@
 }
 #forecast ul li h3 {
   font-size: 1em;
+}
+.highTemp {
+  font-weight: 700;
+}
+.lowTemp {
+  font-weight: 700;
+  color: #68696A;
 }
 #forecast ul li .today h3 {
   font-size: 1.2em;
@@ -34,7 +46,7 @@
   font-size: 4.2em;
 }
 #today {
-  font-size: 0.4em;
-  font-style: italic;
-  color: #1C84FC;
+  font-size: 0.35em;
+  color: #2095F0;
+  font-weight: 700;
 }
