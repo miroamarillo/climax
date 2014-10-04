@@ -61,3 +61,9 @@ body {
   color: #2095F0;
   font-weight: 700;
 }
+.typeahead ul {
+  max-height: 150px;
+  border: 1px solid #333;
+  padding: 3px;
+  overflow: auto;
+}
