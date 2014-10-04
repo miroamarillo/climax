@@ -31,6 +31,7 @@ angular.module('myApp', ['ngRoute'])
 			        // object that nests the forecasts inside
 			        // the forecast.simpleforecast key
 			        console.log(data);
+			        console.log(data.forecast.simpleforecast.forecastday[0].icon);
 			        d.resolve(data.forecast.simpleforecast);
 			      }).error(function(err) {
 			        d.reject(err);
@@ -61,11 +62,11 @@ angular.module('myApp', ['ngRoute'])
 		var service = {
 			user: {},
 			save: function(){
-				localStorage.climax = angular.toJson(service.user);
+				sessionStorage.climax = angular.toJson(service.user);
 			},
 			restore: function(){
 				//Pull from sessionStorage
-				service.user = angular.fromJson(localStorage.climax) || defaults;
+				service.user = angular.fromJson(sessionStorage.climax) || defaults;
 
 				return service.user;
 			}
@@ -78,7 +79,7 @@ angular.module('myApp', ['ngRoute'])
 	.config(function(WeatherProvider) {
 		WeatherProvider.setApiKey('edce8d7f316b6fe4');
 	})
-	.config(function($routeProvider){
+	.config(['$routeProvider', function($routeProvider){
 		$routeProvider
 			.when('/', {
 				templateUrl: 'templates/home.html',
@@ -89,13 +90,14 @@ angular.module('myApp', ['ngRoute'])
 				controller: 'SettingsController'
 			})
 			.otherwise({redirectTo: '/'});
-	})
-	.directive('autoFill', function($timeout) {
+	}])
+	.directive('autoFill', function($timeout, Weather) {
 	  return {
 	    restrict: 'EA',
 	    scope: {
 	      autoFill: '&',
-	      ngModel: '='
+	      ngModel: '=',
+	      timezone: '='
 	    },
 	    compile: function(tEle, tAttrs) {
 	      var tplEl = angular.element('<div class="typeahead">' +
