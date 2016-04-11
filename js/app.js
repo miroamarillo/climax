@@ -4,17 +4,20 @@
 * Simple Chrome Weather App
 */
 angular.module('myApp', ['ngRoute'])
+	.config(function(WeatherProvider) {
+		WeatherProvider.setApiKey('edce8d7f316b6fe4');
+	})
 	.provider('Weather', function(){
 		var apiKey = "";
+
+		this.setApiKey = function(key){
+			if(key) this.apiKey = key;
+		};
 
 		this.getUrl = function(type, ext) {
 			return "http://api.wunderground.com/api/" +
 			this.apiKey + "/" + type + "/q/" +
 			ext + '.json';
-		};
-
-		this.setApiKey = function(key){
-			if(key) this.apiKey = key;
 		};
 
 		this.$get = function($q, $http){
@@ -31,11 +34,39 @@ angular.module('myApp', ['ngRoute'])
 						// object that nests the forecasts inside
 						// the forecast.simpleforecast key
 						console.log(data);
-							var iconData = data.forecast.simpleforecast.forecastday;
-							for (var i = 0; i < iconData.length; i++) {
-								console.log(iconData[i].icon);
-							}
+						var iconData = data.forecast.simpleforecast.forecastday;
+						for (var i = 0; i < iconData.length; i++) {
+							console.log(iconData[i].icon);
+						}
 						d.resolve(data.forecast.simpleforecast);
+					}).error(function(err) {
+						d.reject(err);
+					});
+					return d.promise;
+				},
+				getWeatherConditions: function(city){
+					var d = $q.defer();
+					$http({
+						method: 'GET',
+						url: self.getUrl("conditions", city),
+						cache: true
+					}).success(function(data){
+						d.resolve(data);
+						console.log(data);
+					}).error(function(err) {
+						d.reject(err);
+					});
+					return d.promise;
+				},
+				getAstronomy: function(city){
+					var d = $q.defer();
+					$http({
+						method: 'GET',
+						url: self.getUrl("astronomy", city),
+						cache: true
+					}).success(function(data){
+						d.resolve(data);
+						console.log(data);
 					}).error(function(err) {
 						d.reject(err);
 					});
@@ -76,9 +107,6 @@ angular.module('myApp', ['ngRoute'])
 		service.restore();
 		return service;
 	})
-	.config(function(WeatherProvider) {
-		WeatherProvider.setApiKey('edce8d7f316b6fe4');
-	})
 	.config(['$routeProvider', function($routeProvider){
 		$routeProvider
 			.when('/', {
@@ -91,13 +119,6 @@ angular.module('myApp', ['ngRoute'])
 			})
 			.otherwise({redirectTo: '/'});
 	}])
-	// .directive('icon', function(data){
-	// 	return {};
-	// 	var iconData = data.forecast.simpleforecast.forecastday;
-	// 	for (var i = 0; i < iconData.length; i++) {
-	// 		console.log(iconData[i].icon);
-	// 	}
-	// })
 	.directive('autoFill', function($timeout, Weather) {
 		return {
 			restrict: 'EA',
@@ -157,18 +178,29 @@ angular.module('myApp', ['ngRoute'])
 		}
 	})
 	.controller('MainController', function($scope, $timeout, Weather, UserService){
-		//Build the date object
-		$scope.date = {};
 
-		$scope.weather = {}
+		$scope.weather = {};
 		// Hardcode San_Francisco for now
 		$scope.user = UserService.user;
 		Weather.getWeatherForecast($scope.user.location)
 			.then(function(data) {
 				$scope.weather.forecast = data;
+				console.log($scope.weather.forecast);
 			});
+		Weather.getWeatherConditions($scope.user.location)
+			.then(function(data){
+				$scope.weather.conditions = data;
+				console.log($scope.weather.conditions);
+			})
+		Weather.getAstronomy($scope.user.location)
+			.then(function(data){
+				$scope.weather.astronomy = data;
+				console.log($scope.weather.astronomy);
+			})
 
 		//Update function
+		//Build the date object
+		$scope.date = {};
 		var updateTime = function(){
 			$scope.date.tz = new Date(new Date().toLocaleString(
 				"en-US", {timeZone: $scope.user.timezone}
@@ -177,6 +209,7 @@ angular.module('myApp', ['ngRoute'])
 		}
 
 		//Kick off the update function
+		console.log($scope);
 		updateTime();
 	})
 	.controller('SettingsController', function($scope, UserService, Weather){
