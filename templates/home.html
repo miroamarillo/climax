@@ -8,13 +8,15 @@
         </div> -->
         <div id="forecast">
           <ul class="row list-unstyled">
-            <li ng-repeat="day in weather.forecast.forecastday" class="col-md-3">
+            <li ng-repeat="day in weather.forecast" class="col-md-3">
               <div ng-class="{today: $index == 0}">
                 <div ng-switch="day.icon">
-                  <i ng-switch-when="rain" class="{{ day.icon }} wi wi-day-rain"></i>
-                  <i ng-switch-when="chancerain" class="{{ day.icon }} wi wi-day-rain-mix"></i>
-                  <i ng-switch-when="partlycloudy" class="{{ day.icon }} wi wi-day-cloudy"></i>
-                  <i ng-switch-when="clear" class="{{ day.icon }} wi wi-day-sunny"></i>
+                  <i ng-switch-when="rain" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-rain"></i>
+                  <i ng-switch-when="chancerain" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-rain-mix"></i>
+                  <i ng-switch-when="partlycloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
+                  <i ng-switch-when="clear" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-sunny"></i>
+                  <i ng-switch-when="cloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
+                  <i ng-switch-when="mostlycloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
                   <i ng-switch-default class="{{ day.icon }} wi wi-na"></i>
                 </div>
                 <h3><span class="highTemp">{{ day.high.celsius }}</span> <span class="lowTemp">{{ day.low.celsius }}</span></h3>
