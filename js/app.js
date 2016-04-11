@@ -27,51 +27,68 @@ angular.module('myApp', ['ngRoute'])
 		this.$get = function($q, $http){
 			var self = this;
 			return{
-				getWeatherForecast: function(city) {
+				// getWeatherForecast: function(city) {
+				// 	var d = $q.defer();
+				// 	$http({
+				// 		method: 'GET',
+				// 		url: self.getUrl("forecast", city),
+				// 		cache: true
+				// 	}).success(function(data) {
+				// 		// The wunderground API returns the
+				// 		// object that nests the forecasts inside
+				// 		// the forecast.simpleforecast key
+				// 		console.log(data);
+				// 		var iconData = data.forecast.simpleforecast.forecastday;
+				// 		for (var i = 0; i < iconData.length; i++) {
+				// 			console.log(iconData[i].icon);
+				// 		}
+				// 		d.resolve(data.forecast.simpleforecast);
+				// 	}).error(function(err) {
+				// 		d.reject(err);
+				// 	});
+				// 	return d.promise;
+				// },
+				// getWeatherConditions: function(city){
+				// 	var d = $q.defer();
+				// 	$http({
+				// 		method: 'GET',
+				// 		url: self.getUrl("conditions", city),
+				// 		cache: true
+				// 	}).success(function(data){
+				// 		d.resolve(data);
+				// 		console.log(data);
+				// 	}).error(function(err) {
+				// 		d.reject(err);
+				// 	});
+				// 	return d.promise;
+				// },
+				// getAstronomy: function(city){
+				// 	var d = $q.defer();
+				// 	$http({
+				// 		method: 'GET',
+				// 		url: self.getUrl("astronomy", city),
+				// 		cache: true
+				// 	}).success(function(data){
+				// 		d.resolve(data);
+				// 		console.log(data);
+				// 	}).error(function(err) {
+				// 		d.reject(err);
+				// 	});
+				// 	return d.promise;
+				// },
+				getMultipleFeatures: function(city){
 					var d = $q.defer();
 					$http({
 						method: 'GET',
-						url: self.getUrl("forecast", city),
+						url: self.getUrl(["forecast", "conditions", "astronomy"], city),
 						cache: true
-					}).success(function(data) {
-						// The wunderground API returns the
-						// object that nests the forecasts inside
-						// the forecast.simpleforecast key
-						console.log(data);
+					}).success(function(data){
 						var iconData = data.forecast.simpleforecast.forecastday;
 						for (var i = 0; i < iconData.length; i++) {
 							console.log(iconData[i].icon);
 						}
-						d.resolve(data.forecast.simpleforecast);
-					}).error(function(err) {
-						d.reject(err);
-					});
-					return d.promise;
-				},
-				getWeatherConditions: function(city){
-					var d = $q.defer();
-					$http({
-						method: 'GET',
-						url: self.getUrl("conditions", city),
-						cache: true
-					}).success(function(data){
 						d.resolve(data);
-						console.log(data);
-					}).error(function(err) {
-						d.reject(err);
-					});
-					return d.promise;
-				},
-				getAstronomy: function(city){
-					var d = $q.defer();
-					$http({
-						method: 'GET',
-						url: self.getUrl("astronomy", city),
-						cache: true
-					}).success(function(data){
-						d.resolve(data);
-						console.log(data);
-					}).error(function(err) {
+					}).error(function(err){
 						d.reject(err);
 					});
 					return d.promise;
@@ -186,21 +203,26 @@ angular.module('myApp', ['ngRoute'])
 		$scope.weather = {};
 		// Hardcode San_Francisco for now
 		$scope.user = UserService.user;
-		Weather.getWeatherForecast($scope.user.location)
-			.then(function(data) {
-				$scope.weather.forecast = data;
-				console.log($scope.weather.forecast);
-			});
-		Weather.getWeatherConditions($scope.user.location)
+		// Weather.getWeatherForecast($scope.user.location)
+		// 	.then(function(data) {
+		// 		$scope.weather.forecast = data;
+		// 		console.log($scope.weather.forecast);
+		// 	});
+		// Weather.getWeatherConditions($scope.user.location)
+		// 	.then(function(data){
+		// 		$scope.weather.conditions = data;
+		// 		console.log($scope.weather.conditions);
+		// 	});
+		// Weather.getAstronomy($scope.user.location)
+		// 	.then(function(data){
+		// 		$scope.weather.astronomy = data;
+		// 		console.log($scope.weather.astronomy);
+		// 	});
+		Weather.getMultipleFeatures($scope.user.location)
 			.then(function(data){
-				$scope.weather.conditions = data;
-				console.log($scope.weather.conditions);
-			})
-		Weather.getAstronomy($scope.user.location)
-			.then(function(data){
-				$scope.weather.astronomy = data;
-				console.log($scope.weather.astronomy);
-			})
+				$scope.weather.forecast = data.forecast.simpleforecast.forecastday;
+				$scope.weather.conditions = data.current_observation;
+				$scope.weather.moonStatus = data.moon_phase;
 
 		//Update function
 		//Build the date object
