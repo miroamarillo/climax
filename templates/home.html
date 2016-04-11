@@ -1,37 +1,26 @@
-      <div ng-controller="MainController">
-        <div id="datetime">
-          <h1>{{date.tz | date:'hh mm ss'}}</h1>
-          <h2>{{date.tz | date:'EEEE, MMMM dd, yyyy'}}</h2>
-        </div>
-<!--         <div id="forecast">
-          <pre>{{ weather.forecast | json }}</pre>
-        </div> -->
-        <div id="forecast">
-          <ul class="row list-unstyled">
-            <li ng-repeat="day in weather.forecast" class="col-md-3">
-              <div ng-class="{today: $index == 0}">
-                <div ng-switch="day.icon">
-                  <i ng-switch-when="rain" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-rain"></i>
-                  <i ng-switch-when="chancerain" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-rain-mix"></i>
-                  <i ng-switch-when="partlycloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
-                  <i ng-switch-when="clear" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-sunny"></i>
-                  <i ng-switch-when="cloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
-                  <i ng-switch-when="mostlycloudy" class="{{ day.icon }} wi wi-{{weather.iconFlag}}-cloudy"></i>
-                  <i ng-switch-default class="{{ day.icon }} wi wi-na"></i>
-                </div>
-                <h3><span class="highTemp">{{ day.high.celsius }}</span> <span class="lowTemp">{{ day.low.celsius }}</span></h3>
-                <h4 ng-if="$index == 0" id="today">Today<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
-                <h4 ng-if="$index != 0">{{ day.date.weekday }}<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div id="city">
-          <h1>{{user.location}}</h1>
-        </div>
-        <div id="forecast">
-          <pre>{{ weather.forecast | json }}</pre>
-          <pre>{{ weather.conditions | json }}</pre>
-          <pre>{{ weather.moonStatus | json }}</pre>
-        </div>
-      </div>
+<div ng-controller="MainController">
+	<div id="datetime">
+		<h1>{{date.tz | date:'hh mm ss'}}</h1>
+		<h2>{{date.tz | date:'EEEE, MMMM dd, yyyy'}}</h2>
+	</div>
+	<div id="forecast">
+		<ul class="row list-unstyled">
+			<li ng-repeat="day in weather.forecast" class="col-md-3">
+				<div ng-class="{today: $index == 0}">
+					<i class=" wi wi-wu-{{ day.icon }}"></i>
+					<h3><span class="highTemp">{{ day.high.celsius }}</span> <span class="lowTemp">{{ day.low.celsius }}</span></h3>
+					<h4 ng-if="$index == 0" id="today">Today<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
+					<h4 ng-if="$index != 0">{{ day.date.weekday }}<br />{{ day.date.monthname }} {{ day.date.day}}</h4>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="city">
+		<h1>{{user.location}}</h1>
+	</div>
+	<div id="forecast">
+		<pre>{{ weather.forecast | json }}</pre>
+		<pre>{{ weather.conditions | json }}</pre>
+		<pre>{{ weather.moonStatus | json }}</pre>
+	</div>
+</div>
