@@ -1,18 +1,16 @@
 @charset "UTF-8";
-
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],
 .ng-cloak, .x-ng-cloak,
 .ng-hide {
-  display: none !important;
+	display: none !important;
 }
-
 ng\:form {
-  display: block;
+	display: block;
 }
 body {
-  font-family: 'HelveticaNeue-UltraLight','Helvetica Neue UltraLight','Helvetica Neue','Open-Light',sans-serif;
-  color: #D2D2D2;
-  background-color: #222426;
+	font-family: 'HelveticaNeue-UltraLight','Helvetica Neue UltraLight','Helvetica Neue','Open-Light',sans-serif;
+	color: #D2D2D2;
+	background-color: #222426;
 }
 #datetime {
 	text-align: center;
@@ -24,46 +22,46 @@ body {
 	font-size: 1.2em;
 }
 #forecast ul li {
-  font-size: 4.5em;
-  text-align: center;
+	font-size: 4.5em;
+	text-align: center;
 }
 #forecast ul li h3 {
-  font-size: 1em;
+	font-size: 1em;
 }
 .highTemp {
-  font-weight: 700;
+	font-weight: 700;
 }
 .lowTemp {
-  font-weight: 700;
-  color: #68696A;
+	font-weight: 700;
+	color: #68696A;
 }
 #forecast ul li .today h3 {
-  font-size: 1.2em;
+	font-size: 1.2em;
 }
 #actionbar {
-  position: absolute;
-  bottom: 0.5em;
-  right: 1.0em;
+	position: absolute;
+	bottom: 0.5em;
+	right: 1.0em;
 }
 #actionbar a {
-  font-size: 2.2rem;
-  color: #000;
+	font-size: 2.2rem;
+	color: #000;
 }
 #city {
-  text-align: center;
-  padding-top: 3em;
+	text-align: center;
+	padding-top: 3em;
 }
 #city h2 {
-  font-size: 4.2em;
+	font-size: 4.2em;
 }
 #today {
-  font-size: 0.35em;
-  color: #2095F0;
-  font-weight: 700;
+	font-size: 0.35em;
+	color: #2095F0;
+	font-weight: 700;
 }
 .typeahead ul {
-  max-height: 150px;
-  border: 1px solid #333;
-  padding: 3px;
-  overflow: auto;
+	max-height: 150px;
+	border: 1px solid #333;
+	padding: 3px;
+	overflow: auto;
 }
