@@ -223,6 +223,18 @@ angular.module('myApp', ['ngRoute'])
 				$scope.weather.forecast = data.forecast.simpleforecast.forecastday;
 				$scope.weather.conditions = data.current_observation;
 				$scope.weather.moonStatus = data.moon_phase;
+				$scope.weather.sunTiming = {
+					"sunrise": data.moon_phase.sunrise.hour + ":" + data.moon_phase.sunrise.minute,
+					"sunset": data.moon_phase.sunset.hour + ":" + data.moon_phase.sunset.minute,
+					"currentTime": data.moon_phase.current_time.hour + ":" + data.moon_phase.current_time.minute
+				}
+				if($scope.weather.sunTiming.current_time >= $scope.weather.sunTiming.sunset){
+					$scope.weather.iconFlag = 'night';
+				}
+				else {
+					$scope.weather.iconFlag = 'day';
+				}
+			});
 
 		//Update function
 		//Build the date object
