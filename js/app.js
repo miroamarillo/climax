@@ -13,8 +13,12 @@ angular.module('myApp', ['ngRoute'])
 		this.setApiKey = function(key){
 			if(key) this.apiKey = key;
 		};
-
+		// type can be an array for multiple calls or a string for one call
 		this.getUrl = function(type, ext) {
+			//Check if type is an array
+			if (Array.isArray(type)){
+				type = type.join("/");
+			}
 			return "http://api.wunderground.com/api/" +
 			this.apiKey + "/" + type + "/q/" +
 			ext + '.json';
