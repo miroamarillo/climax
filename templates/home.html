@@ -27,4 +27,9 @@
         <div id="city">
           <h1>{{user.location}}</h1>
         </div>
+        <div id="forecast">
+          <pre>{{ weather.forecast | json }}</pre>
+          <pre>{{ weather.conditions | json }}</pre>
+          <pre>{{ weather.astronomy | json }}</pre>
+        </div>
       </div>
