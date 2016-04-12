@@ -4,8 +4,7 @@
   "description": "Weather New Tab App",
   "version": "0.1",
   "permissions": [
-    "http://api.wunderground.com/api/",
-    "http://autocomplete.wunderground.com/api"
+    "http://api.wunderground.com/api/"
   ],
   "background": {
     "scripts": ["js/vendor/angular.min.js"]

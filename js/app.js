@@ -51,6 +51,7 @@ angular.module('myApp', ['ngRoute'])
 						method: 'GET',
 						url: "http://autocomplete.wunderground.com/aq?query=" +	query
 					}).success(function(data) {
+						console.log(data.RESULTS);
 						d.resolve(data.RESULTS);
 					}).error(function(err) {
 						d.reject(err);
@@ -64,6 +65,9 @@ angular.module('myApp', ['ngRoute'])
 		var defaults = {
 			location: 'Toronto, Canada'
 		};
+		// var defaults = {
+		// 	location: 'autoip'
+		// };
 		var service = {
 			user: {},
 			save: function(){
@@ -101,13 +105,14 @@ angular.module('myApp', ['ngRoute'])
 				timezone: '='
 			},
 			compile: function(tEle, tAttrs) {
-				var tplEl = angular.element('<div class="typeahead">' +
-				'<input type="text" autocomplete="off" />' +
-				'<ul id="autolist" ng-show="reslist">' +
-				'<li ng-repeat="res in reslist" ' +
-					'>{{res.name}}</li>' +
-				'</ul>' +
-				'</div>');
+				var tplEl = angular.element(
+					'<div class="typeahead">' +
+						'<input type="text" autocomplete="off" />' +
+						'<ul id="autolist" ng-show="reslist">' +
+							'<li ng-repeat="res in reslist">{{ res.name }}</li>' +
+						'</ul>' +
+					'</div>'
+				);
 				var input = tplEl.find('input');
 				input.attr('type', tAttrs.type);
 				input.attr('ng-model', tAttrs.ngModel);
@@ -134,18 +139,20 @@ angular.module('myApp', ['ngRoute'])
 										if (data && data.length > 0) {
 											scope.reslist = data;
 											scope.ngModel = data[0].name;
-											scope.timezone = data[0].tz;
+											console.log(scope.reslist[0].name);
+											// scope.ngModel = data[0].name;
+											// scope.timezone = data[0].tz;
 											// scope.ngModel = "zmw:" + data[0].zmw;
 										}
 									});
-							}, 3000);
+							}, 1000);
 						}
 					});
 					// Hide the reslist on blur
-					input.bind('blur', function(e) {
-						scope.reslist = null;
-						scope.$digest();
-					});
+					// input.bind('blur', function(e) {
+					// 	scope.reslist = null;
+					// 	scope.$digest();
+					// });
 				}
 			}
 		}
@@ -188,10 +195,14 @@ angular.module('myApp', ['ngRoute'])
 		console.log($scope);
 		updateTime();
 	})
-	.controller('SettingsController', function($scope, UserService, Weather){
+	.controller('SettingsController', function($scope, $location, UserService, Weather){
 		$scope.user = UserService.user;
-		$scope.fetchCities = Weather.getCityDetails;
+
 		$scope.save = function(){
 			UserService.save();
+			$location.path('/');
 		}
+
+		$scope.fetchCities = Weather.getCityDetails;
+		console.log($scope);
 	});
