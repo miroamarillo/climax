@@ -138,6 +138,8 @@ angular.module('myApp', ['ngRoute'])
 									.then(function(data) {
 										if (data && data.length > 0) {
 											scope.reslist = data;
+											console.log(scope.reslist.length);
+											console.log(scope);
 											scope.ngModel = data[0].name;
 											console.log(scope.reslist[0].name);
 											// scope.ngModel = data[0].name;
