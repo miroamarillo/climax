@@ -3,6 +3,12 @@ climax
 
 Simple weather app for chrome
 
+#Install
+* Open chrome://extensions
+* Look for '**Load unpacked extensions**' button
+* Find the folder cloned from this repo and you will have the new extension working
+* Open a new tab
+
 
 ##References
 
